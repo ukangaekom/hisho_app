@@ -1,0 +1,14 @@
+[application]
+name = "hisho"
+
+[bundle]
+identifier = "com.ukangaekom.hisho"
+publisher = "Ukanga Ekom"
+short_description = "Hisho cross-platform application"
+long_description = "Hisho desktop and mobile application"
+
+[bundle.macos]
+minimum_system_version = "11.0"
+
+[bundle.ios]
+minimum_system_version = "15.0"
