@@ -1,0 +1,12 @@
+[package]
+name = "hisho-core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "hisho_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "hisho-core"
+path = "src/main.rs"
