@@ -130,8 +130,8 @@ jobs:
       - name: Build macOS DMG
         run: dx bundle --package desktop --platform macos --package-types dmg --release
 
-      - name: Build iOS IPA
-        run: dx bundle --package mobile --platform ios --package-types ipa --release
+      - name: Build unsigned iOS app
+        run: dx bundle --package mobile --platform ios --package-types ios --codesign false --release
 
       - name: Upload Apple bundles
         uses: actions/upload-artifact@v4
@@ -139,6 +139,5 @@ jobs:
           name: hisho-apple
           path: |
             target/dx/desktop/**/*.dmg
-            target/dx/mobile/**/*.ipa
             target/dx/mobile/**/*.app
           if-no-files-found: error
