@@ -1,10 +1,9 @@
 use dioxus::prelude::*;
-use ui::Hero;
+use ui::FinancialDashboard;
 
 #[component]
 pub fn Home() -> Element {
     rsx! {
-        Hero {}
-
+        FinancialDashboard {}
     }
 }

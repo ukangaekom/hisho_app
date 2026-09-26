@@ -1,21 +1,5 @@
 use dioxus::prelude::*;
-
-use ui::Navbar;
-use views::{Blog, Home};
-
-mod views;
-
-#[derive(Debug, Clone, Routable, PartialEq)]
-#[rustfmt::skip]
-enum Route {
-    #[layout(DesktopNavbar)]
-    #[route("/")]
-    Home {},
-    #[route("/blog/:id")]
-    Blog { id: i32 },
-}
-
-const MAIN_CSS: Asset = asset!("/assets/main.css");
+use ui::BootScreen;
 
 fn main() {
     dioxus::launch(App);
@@ -23,32 +7,21 @@ fn main() {
 
 #[component]
 fn App() -> Element {
-    // Build cool things ✌️
+    let mut is_booted = use_signal(|| false);
 
     rsx! {
-        // Global app resources
-        document::Link { rel: "stylesheet", href: MAIN_CSS }
-
-        Router::<Route> {}
-    }
-}
-
-/// A desktop-specific Router around the shared `Navbar` component
-/// which allows us to use the desktop-specific `Route` enum.
-#[component]
-fn DesktopNavbar() -> Element {
-    rsx! {
-        Navbar {
-            Link {
-                to: Route::Home {},
-                "Home"
+        if !is_booted() {
+            BootScreen {
+                app_name: "HISHO".to_string(),
+                tagline: "Desktop Financial OS".to_string(),
+                on_ready: move |_| {
+                    *is_booted.write() = true;
+                }
             }
-            Link {
-                to: Route::Blog { id: 1 },
-                "Blog"
+        } else {
+            div {
+                style: "position: fixed; inset: 0; width: 100vw; height: 100vh; background-color: #ffffff; margin: 0; padding: 0;"
             }
         }
-
-        Outlet::<Route> {}
     }
 }
