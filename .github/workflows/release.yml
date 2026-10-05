@@ -133,11 +133,53 @@ jobs:
       - name: Build unsigned iOS app
         run: dx bundle --package mobile --platform ios --package-types ios --codesign false --release
 
+      - name: Package unsigned iOS app
+        shell: bash
+        run: |
+          app_path=$(find target/dx/mobile -type d -name '*.app' -print -quit)
+          if [[ -z "$app_path" ]]; then
+            echo "No iOS .app bundle was produced"
+            exit 1
+          fi
+          ditto -c -k --sequesterRsrc --keepParent "$app_path" target/dx/mobile/hisho-ios-unsigned.zip
+
       - name: Upload Apple bundles
         uses: actions/upload-artifact@v4
         with:
           name: hisho-apple
           path: |
             target/dx/desktop/**/*.dmg
-            target/dx/mobile/**/*.app
+            target/dx/mobile/hisho-ios-unsigned.zip
           if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [linux, android, windows, apple]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Download release bundles
+        uses: actions/download-artifact@v4
+        with:
+          pattern: hisho-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          mapfile -d '' assets < <(find release-assets -type f -print0)
+          if (( ${#assets[@]} == 0 )); then
+            echo "No release assets were downloaded"
+            exit 1
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${assets[@]}" --clobber
+          else
+            gh release create "$TAG" "${assets[@]}" --title "Hisho $TAG" --generate-notes
+          fi
