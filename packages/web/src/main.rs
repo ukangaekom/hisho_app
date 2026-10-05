@@ -355,28 +355,112 @@ fn App() -> Element {
                             span { "28+ ENVIRONMENTS" }
                         }
                         div { class: "tool-grid",
-                            span { "Claude Code" }
-                            span { "Codex CLI" }
-                            span { "Cursor" }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude/default.svg",
+                                    alt: "",
+                                }
+                                "Claude Code"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/codex/default.svg",
+                                    alt: "",
+                                }
+                                "Codex CLI"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/default.svg",
+                                    alt: "",
+                                }
+                                "Cursor"
+                            }
                             span { "Gemini CLI" }
-                            span { "Windsurf" }
-                            span { "Cline" }
-                            span { "Roo Code" }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/windsurf/default.svg",
+                                    alt: "",
+                                }
+                                "Windsurf"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cline/default.svg",
+                                    alt: "",
+                                }
+                                "Cline"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/roocode/default.svg",
+                                    alt: "",
+                                }
+                                "Roo Code"
+                            }
                             span { "Aider" }
-                            span { "OpenHands" }
-                            span { "Goose" }
-                            span { "Warp" }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/openhands/default.svg",
+                                    alt: "",
+                                }
+                                "OpenHands"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/goose-codename/default.svg",
+                                    alt: "",
+                                }
+                                "Goose"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/warp/default.svg",
+                                    alt: "",
+                                }
+                                "Warp"
+                            }
                             span { "Kiro" }
                             span { "VS Code / Copilot" }
                             span { "Copilot CLI" }
                             span { "JetBrains Junie" }
                             span { "Zed" }
-                            span { "Continue" }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/continue/default.svg",
+                                    alt: "",
+                                }
+                                "Continue"
+                            }
                             span { "Augment Code" }
                             span { "Qodo" }
                             span { "Trae" }
-                            span { "OpenCode" }
-                            span { "Antigravity" }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/opencode/default.svg",
+                                    alt: "",
+                                }
+                                "OpenCode"
+                            }
+                            span {
+                                img {
+                                    class: "tool-icon",
+                                    src: "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/google-antigravity/default.svg",
+                                    alt: "",
+                                }
+                                "Antigravity"
+                            }
                             span { "Amazon Q" }
                             span { "Tabnine" }
                             span { "PearAI" }
