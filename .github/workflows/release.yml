@@ -152,13 +152,14 @@ jobs:
             target/dx/mobile/hisho-ios-unsigned.zip
           if-no-files-found: error
 
-  publish:
+    publish:
     name: Publish GitHub Release
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [linux, android, windows, apple]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+      pull-requests: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -170,19 +171,28 @@ jobs:
           path: release-assets
           merge-multiple: true
 
+      - name: List downloaded assets
+        run: find release-assets -type f -exec ls -lh {} \;
+
       - name: Create or update GitHub Release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
         run: |
           mapfile -d '' assets < <(find release-assets -type f -print0)
           if (( ${#assets[@]} == 0 )); then
-            echo "No release assets were downloaded"
+            echo "ERROR: No release assets were downloaded"
             exit 1
           fi
-
+          
+          echo "Found ${#assets[@]} assets to upload"
+          
           if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG exists, uploading assets..."
             gh release upload "$TAG" "${assets[@]}" --clobber
           else
+            echo "Creating new release $TAG..."
             gh release create "$TAG" "${assets[@]}" --title "Hisho $TAG" --generate-notes
           fi
+          
+          echo "Release publish completed successfully"
