@@ -173,27 +173,32 @@ jobs:
       - name: List downloaded assets
         run: find release-assets -type f -exec ls -lh {} \;
 
-      - name: Create or update GitHub Release
+      - name: Create GitHub Release if needed
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: |
-          mapfile -d '' assets < <(find release-assets -type f -print0)
-          if (( ${#assets[@]} == 0 )); then
-            echo "ERROR: No release assets were downloaded"
-            exit 1
-          fi
-
-          echo "Found ${#assets[@]} assets to upload"
-
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release $TAG exists, uploading assets..."
-            gh release upload "$TAG" "${assets[@]}" --clobber
-          else
-            echo "Creating new release $TAG..."
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG does not exist. Creating it..."
             gh release create "$TAG" --title "Hisho $TAG" --generate-notes
-            sleep 5
-            gh release upload "$TAG" "${assets[@]}" --clobber
+            sleep 2
+          else
+            echo "Release $TAG already exists."
           fi
 
-          echo "Release publish completed successfully"
+      - name: Upload all bundles to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          cd release-assets
+          
+          # Find all files recursively and upload them
+          while IFS= read -r file; do
+            if [[ -f "$file" ]]; then
+              echo "Uploading: $file"
+              gh release upload "$TAG" "$file" --clobber
+            fi
+          done < <(find . -type f)
+          
+          echo "All bundles uploaded successfully"
