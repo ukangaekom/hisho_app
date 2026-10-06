@@ -191,7 +191,9 @@ jobs:
             gh release upload "$TAG" "${assets[@]}" --clobber
           else
             echo "Creating new release $TAG..."
-            gh release create "$TAG" "${assets[@]}" --title "Hisho $TAG" --generate-notes
+            gh release create "$TAG" --title "Hisho $TAG" --generate-notes
+            sleep 5
+            gh release upload "$TAG" "${assets[@]}" --clobber
           fi
 
           echo "Release publish completed successfully"
